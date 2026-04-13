@@ -1,18 +1,40 @@
 package com.applexzs.springboot.error.controllers;
 
 
+import com.applexzs.springboot.error.exceptions.UserNotFoundException;
+import com.applexzs.springboot.error.models.domain.User;
+import com.applexzs.springboot.error.services.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
+@RequestMapping("/app")
 public class AppController {
 
+    @Autowired
+    private IUserService service;
 
-    @GetMapping("/app")
-    public String index(){
+    @GetMapping
+    public String index() {
         //int value = 100 / 0;
-        int value = Integer.parseInt("10x");
+        int value = Integer.parseInt("10");
         System.out.println("value = " + value);
         return "ok 200";
+    }
+
+    @GetMapping("/show/{id}")
+    public User show(@PathVariable(name = "id") Long id) {
+        User user = service.findById(id).orElseThrow(()-> new UserNotFoundException("Error el usuario no existe"));
+//        Optional<User> optionalUser = service.findById(id);
+//        if(optionalUser.isEmpty()){
+//            return ResponseEntity.notFound().build();
+//        }
+        System.out.println(user.getLastname());
+//        return ResponseEntity.ok(optionalUser.get());
+        return user;
     }
 }
