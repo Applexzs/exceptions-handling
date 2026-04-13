@@ -29,12 +29,7 @@ public class AppController {
     @GetMapping("/show/{id}")
     public User show(@PathVariable(name = "id") Long id) {
         User user = service.findById(id).orElseThrow(()-> new UserNotFoundException("Error el usuario no existe"));
-//        Optional<User> optionalUser = service.findById(id);
-//        if(optionalUser.isEmpty()){
-//            return ResponseEntity.notFound().build();
-//        }
         System.out.println(user.getLastname());
-//        return ResponseEntity.ok(optionalUser.get());
         return user;
     }
 }
